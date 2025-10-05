@@ -1,38 +1,41 @@
-// src/components/DatePickerButton.tsx
 import React, { useState } from 'react';
 import { TouchableOpacity, Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../context/ThemeContext';
+import { colors } from '../theme/color';
 
-type Props = {
+interface Props {
   date: Date;
   onDateChange: (date: Date) => void;
-};
+}
 
 export default function DatePickerButton({ date, onDateChange }: Props) {
-  const [show, setShow] = useState(false);
+  const [showPicker, setShowPicker] = useState(false);
+  const { theme } = useTheme();
+  const palette = colors[theme];
 
-  const handleChange = (_: any, picked?: Date) => {
-    setShow(Platform.OS === 'ios');
-    if (picked) onDateChange(picked);
+  const handleChange = (_: any, selectedDate?: Date) => {
+    setShowPicker(Platform.OS === 'ios');
+    if (selectedDate) {
+      onDateChange(selectedDate);
+    }
   };
 
   return (
     <>
-      <TouchableOpacity
-        onPress={() => setShow(true)}
-        style={{ padding: 8, marginRight: 10 }}
-      >
-        <Ionicons name="calendar-outline" size={28} color="#000" />
+      <TouchableOpacity onPress={() => setShowPicker(true)}>
+        <Ionicons name="calendar-outline" size={26} color={palette.text} />
       </TouchableOpacity>
 
-      {show && (
+      {showPicker && (
         <DateTimePicker
           value={date}
           mode="date"
           display="default"
-          maximumDate={new Date()}
           onChange={handleChange}
+          maximumDate={new Date()}
+          textColor={palette.text} // iOS only
         />
       )}
     </>

@@ -1,25 +1,38 @@
-// src/screens/HomeScreen.tsx
 import React from 'react';
 import { SafeAreaView, View, Text, StyleSheet } from 'react-native';
 import { useFacts } from '../hooks/useFacts';
 import DatePickerButton from '../components/DatePickerButton';
 import FactsList from '../components/FactsList';
+import { useTheme } from '../context/ThemeContext';
+import { colors } from '../theme/color';
 
 export default function HomeScreen() {
   const { facts, loading, error, selectedDate, setSelectedDate } = useFacts();
+  const { theme } = useTheme();
+  const palette = colors[theme];
 
   if (!selectedDate) {
     return (
-      <View style={styles.centered}>
-        <Text>Initializing...</Text>
+      <View style={[styles.centered, { backgroundColor: palette.background }]}>
+        <Text style={{ color: palette.text }}>Initializing...</Text>
       </View>
     );
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#f9f9f9' }}>
-      <View style={styles.header}>
-        <Text style={styles.headerDate}>{selectedDate.toDateString()}</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: palette.background }}>
+      <View
+        style={[
+          styles.header,
+          {
+            backgroundColor: palette.card,
+            borderColor: palette.border,
+          },
+        ]}
+      >
+        <Text style={[styles.headerDate, { color: palette.text }]}>
+          {selectedDate.toDateString()}
+        </Text>
         <DatePickerButton date={selectedDate} onDateChange={setSelectedDate} />
       </View>
 
@@ -36,10 +49,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 50,
     paddingBottom: 10,
-    backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderColor: '#eee',
   },
-  headerDate: { fontSize: 18, fontWeight: '600', color: '#333' },
-  centered: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  headerDate: {
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  centered: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
