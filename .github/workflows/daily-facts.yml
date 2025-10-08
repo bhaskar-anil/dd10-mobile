@@ -1,0 +1,20 @@
+name: Daily Supabase Function Trigger
+
+on:
+  schedule:
+    - cron: "0 3 * * *" # Runs every day at 03:00 UTC (adjust as needed)
+  workflow_dispatch:    # Optional: allow manual trigger
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call Supabase Edge Function
+        env:
+          SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJjdWh4cmpraXNraXpic3RwcHB2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgwNDAxOTksImV4cCI6MjA3MzYxNjE5OX0.-YwMkMuFPZfDoUyOmTJjtWRWGmV_E5Bz4M0ZjRFRpoY
+        run: |
+          curl -X POST "https://rcuhxrjkiskizbstpppv.supabase.co/functions/v1/daily-news" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"triggered_by": "github_cron"}'
