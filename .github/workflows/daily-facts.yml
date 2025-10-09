@@ -2,7 +2,7 @@ name: Daily Supabase Function Trigger
 
 on:
   schedule:
-    - cron: "0 3 * * *" # Runs every day at 03:00 UTC (adjust as needed)
+    - cron: "0 1 * * *" # Runs every day at 03:00 UTC (adjust as needed)
   workflow_dispatch:    # Optional: allow manual trigger
 
 jobs:
