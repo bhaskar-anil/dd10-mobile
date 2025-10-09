@@ -1,9 +1,11 @@
 // src/hooks/useFacts.ts
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { fetchFacts, Fact } from '../services/newsService';
 import { loadDate, saveDate } from '../utils/storage';
+import { LanguageContext } from '../context/LanguageContext';
 
 export function useFacts() {
+  const { language } = useContext(LanguageContext);
   const [facts, setFacts] = useState<Fact[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +25,7 @@ export function useFacts() {
     (async () => {
       try {
         setLoading(true);
-        const fetched = await fetchFacts(formatted, 'en');
+        const fetched = await fetchFacts(formatted, language);
         setFacts(fetched);
         setError(null);
         await saveDate(selectedDate);
@@ -33,7 +35,7 @@ export function useFacts() {
         setLoading(false);
       }
     })();
-  }, [selectedDate]);
+  }, [selectedDate, language]);
 
   return { facts, loading, error, selectedDate, setSelectedDate };
 }

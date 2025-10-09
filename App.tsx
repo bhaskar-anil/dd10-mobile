@@ -9,6 +9,8 @@ import { LanguageProvider } from './src/context/LanguageContext';
 import { ThemeProvider, useTheme } from './src/context/ThemeContext';
 import HomeScreen from './src/screens/HomeScreen';
 import ThemeToggle from './src/components/ThemeToggle';
+import { View } from 'react-native';
+import { LanguageToggle } from './src/components/LanguageToggle';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,8 +24,13 @@ function AppNavigator() {
         screenOptions={{
           headerShown: true,
           headerTitle: 'DailyDigest10',
-          headerTitleAlign: 'center',
-          headerRight: () => <ThemeToggle />, // ✅ clean injection
+          headerTitleAlign: 'left',
+          headerRight: () => (
+            <View style={{ flexDirection: 'row', gap: 8 }}>
+              <LanguageToggle />
+              <ThemeToggle />
+            </View>
+          ),
         }}
       >
         <Stack.Screen name="Home" component={HomeScreen} />
